@@ -31,11 +31,11 @@ class DBStorage:
             os.environ['HBNB_MYSQL_HOST'],
             os.environ['HBNB_MYSQL_DB']),
                                pool_pre_ping=True)
-        if 'HBNB_ENV' in environ.keys():
+        if 'HBNB_ENV' in os.environ.keys():
             if os.environ['HBNB_ENV'] == 'test':
                 Base.metadata.drop_all(bind=self.__engine)
 
-   def all(self, cls=None):
+    def all(self, cls=None):
         """ returns a dictionary"""
         my_dict = {}
         if cls is None:

@@ -56,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
             for key, value in new_dict.items():
                 if hasattr(obj, key):
                     if '_' in value:
-                        value = value.replace('_',' ')
+                        value = value.replace('_', ' ')
                     if value.isdigit():
                         if "." in value:
                             value = float(value)

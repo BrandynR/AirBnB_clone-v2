@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """This is the review class"""
-from models.base_model import BaseModel, Base, String, Column, ForeignKey
+from models.base_model import BaseModel, Base, String, Column
 from models.user import User
 from models.place import Place
-
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship, backref
 
 class Review(BaseModel, Base):
     """This is the class for Review

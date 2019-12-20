@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the user class"""
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base, Column, String
+from sqlalchemy.orm import relationship
 
 
 class User(BaseModel):

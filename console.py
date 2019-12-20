@@ -43,6 +43,26 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
+            if len(my_list) > 1:
+                new_dict = {}
+                for index in range(1, len(my_list)):
+                    temp = my_list[index].split('=')
+
+                    if temp[1][0] == '"' and temp[1][-1] == '"':
+                        temp[1] = temp[1][1:-1]
+                        temp[1] = temp[1].replace('"', '\\"')
+                        new_dict[temp[0]] = temp[1]
+
+            for key, value in new_dict.items():
+                if hasattr(obj, key):
+                    if '_' in value:
+                        value = value.replace('_',' ')
+                    if value.isdigit():
+                        if "." in value:
+                            value = float(value)
+                        elif "_id" not in key:
+                            value = int(value)
+                setattr(obj, key, value)
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:

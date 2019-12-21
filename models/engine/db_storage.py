@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This is the database storage class for AirBnB"""
 import json
-import  os
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
@@ -25,12 +25,13 @@ class DBStorage:
 
     def __init__(self):
         """ init engine and session with mysqldb and sqlalchemy"""
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-            os.environ['HBNB_MYSQL_USER'],
-            os.environ['HBNB_MYSQL_PWD'],
-            os.environ['HBNB_MYSQL_HOST'],
-            os.environ['HBNB_MYSQL_DB']),
-                               pool_pre_ping=True)
+        DBStorage.__engine = create_engine(
+            'mysql+mysqldb://{}:{}@{}/{}'.format(
+                os.environ['HBNB_MYSQL_USER'],
+                os.environ['HBNB_MYSQL_PWD'],
+                os.environ['HBNB_MYSQL_HOST'],
+                os.environ['HBNB_MYSQL_DB']),
+            pool_pre_ping=True)
         self.reload()
         if 'HBNB_ENV' in os.environ.keys():
             if os.environ['HBNB_ENV'] == 'test':
@@ -63,7 +64,9 @@ class DBStorage:
             DBStorage.__session.delete(obj)
 
     def reload(self):
-        Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(
-            bind=self.__engine,
-            expire_on_commit=False))
+        """create all tables in the db and create current session from engine
+        """
+        Base.metadata.create_all(DBStorage.__engine)
+        Session = sessionmaker()
+        Session.configure(bind=DBStorage.__engine)
+        DBStorage.__session = Session()

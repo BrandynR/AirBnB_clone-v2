@@ -8,7 +8,7 @@ from models.user import User
 from sqlalchemy.orm import relationship, backref
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
         city_id: city id

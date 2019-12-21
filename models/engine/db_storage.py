@@ -14,8 +14,8 @@ from models.amenity import Amenity
 
 
 class DBStorage:
-    __engine = None;
-    __session = None;
+    __engine = None
+    __session = None
     __clsname = {"State": State,
                  "City": City,
                  "User": User,
@@ -31,9 +31,10 @@ class DBStorage:
             os.environ['HBNB_MYSQL_HOST'],
             os.environ['HBNB_MYSQL_DB']),
                                pool_pre_ping=True)
+        self.reload()
         if 'HBNB_ENV' in os.environ.keys():
             if os.environ['HBNB_ENV'] == 'test':
-                Base.metadata.drop_all(bind=self.__engine)
+                Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """ returns a dictionary"""
@@ -62,9 +63,7 @@ class DBStorage:
             DBStorage.__session.delete(obj)
 
     def reload(self):
-        """create all tables in the db and create current session from engine
-        """
-        Base.metadata.create_all(DBStorage.__engine)
-        Session = sessionmaker()
-        Session.configure(bind=DBStorage.__engine)
-        DBStorage.__session = Session()
+        Base.metadata.create_all(self.__engine)
+        self.__session = scoped_session(sessionmaker(
+            bind=self.__engine,
+            expire_on_commit=False))

@@ -5,6 +5,7 @@ from sqlalchemy import Float, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.city import City
 from models.user import User
+from sqlalchemy.orm import relationship, backref
 
 
 class Place(BaseModel):
@@ -37,9 +38,9 @@ class Place(BaseModel):
     reviews = relationship("Review", "place")
 
     amenities = relationship(
-        "Amenity", backref="place_amenities",
+        "Amenity",
         secondary="place_amenity",
-        viewonly=False)
+        viewonly=False, backref="place")
 
     @property
     def reviews(self):
@@ -62,16 +63,3 @@ class Place(BaseModel):
             if "Amenity" in key and value.place_id == self.id:
                 amenities.append(value)
         return amenities
-
-    place_amenity = Table(
-                            "place_amenity", Base.metadata,
-                            Column('place_id',
-                                   String(60),
-                                   ForeignKey('places.id'),
-                                   primary_key=True,
-                                   nullable=False),
-                            Column('amenity_id',
-                                   String(60),
-                                   ForeignKey('amenities.id'),
-                                   primary_key=True,
-                                   nullable=False))

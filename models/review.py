@@ -6,6 +6,7 @@ from models.place import Place
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
+
 class Review(BaseModel, Base):
     """This is the class for Review
     Attributes:

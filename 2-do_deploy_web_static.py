@@ -25,6 +25,7 @@ def do_pack():
     except:
         return None
 
+
 def do_deploy(archive_path):
     """distributes an archive to your web servers"""
     if (os.path.exists(archive_path)):

@@ -70,3 +70,7 @@ class DBStorage:
         Session = sessionmaker()
         Session.configure(bind=DBStorage.__engine)
         DBStorage.__session = Session()
+
+    def close(self):
+        """remove connections on private attribute or close() on session"""
+        DBStorage.__session.remove()

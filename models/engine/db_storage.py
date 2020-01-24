@@ -73,4 +73,4 @@ class DBStorage:
 
     def close(self):
         """remove connections on private attribute or close() on session"""
-        DBStorage.__session.remove()
+        DBStorage.__session.close()
